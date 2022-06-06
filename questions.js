@@ -11,13 +11,15 @@ class Questions {
     return this.questionsList[qTitle]?.question;
   }
 
-  nextQuestion() {
+  isAnswerValid() {
     const qTitle = this.qTitles[this.index];
     const question = this.questionsList[qTitle];
     const answer = this.answers[qTitle];
-    if (question.validate(answer)) {
-      this.index++;
-    }
+    return question.validate(answer)
+  }
+
+  nextQuestion() {
+    this.index++;
   }
 
   isQuestionsOver() {

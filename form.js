@@ -6,26 +6,28 @@ const identity = (arg) => arg;
 
 const splitToArray = (text) => text.length === 0 ? [] : text.split(',');
 
-const validateName = (name) => name.length >= 5 && /^[a-zA-Z]*$/.test(name);
+const isNameValid = (name) => name.length >= 5 && /^[a-zA-Z]*$/.test(name);
 
-const isHobbiesEmpty = (hobbies) => hobbies.length !== 0;
+const isHobbiesValid = (hobbies) => hobbies.length !== 0;
+
+const isDateValid = (date) => /^[0-9]{4,4}-[0-9]{2,2}-[0-9]{2,2}$/.test(date);
 
 const main = () => {
   const questionsConfig = {
     Name: {
       question: 'Enter your name:',
       parser: identity,
-      validate: validateName
+      validate: isNameValid
     },
     DOB: {
       question: 'Enter your DOB',
       parser: identity,
-      validate: () => true
+      validate: isDateValid
     },
     Hobbies: {
       question: 'Enter your hobbies',
       parser: splitToArray,
-      validate: isHobbiesEmpty
+      validate: isHobbiesValid
     }
   };
 
@@ -34,7 +36,10 @@ const main = () => {
   console.log(questions.currentQuestion());
   process.stdin.on('data', (input) => {
     questions.recordInput(input.trim());
-    questions.nextQuestion();
+
+    if (questions.isAnswerValid()) {
+      questions.nextQuestion();
+    }
 
     if (questions.isQuestionsOver()) {
       process.stdin.emit('close');
