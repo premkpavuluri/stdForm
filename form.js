@@ -2,16 +2,30 @@ process.stdin.setEncoding('utf8');
 const { Questions } = require('./questions.js');
 const fs = require('fs');
 
+const identity = (arg) => arg;
+
+const splitToArray = (text) => text.length === 0 ? [] : text.split(',');
+
+const validateName = (name) => name.length >= 5 && /^[a-zA-Z]*$/.test(name);
+
+const isHobbiesEmpty = (hobbies) => hobbies.length !== 0;
+
 const main = () => {
   const questionsConfig = {
     Name: {
-      question: 'Enter your name:'
+      question: 'Enter your name:',
+      parser: identity,
+      validate: validateName
     },
     DOB: {
-      question: 'Enter your DOB'
+      question: 'Enter your DOB',
+      parser: identity,
+      validate: () => true
     },
     Hobbies: {
-      question: 'Enter your hobbies'
+      question: 'Enter your hobbies',
+      parser: splitToArray,
+      validate: isHobbiesEmpty
     }
   };
 

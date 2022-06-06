@@ -12,7 +12,12 @@ class Questions {
   }
 
   nextQuestion() {
-    this.index++;
+    const qTitle = this.qTitles[this.index];
+    const question = this.questionsList[qTitle];
+    const answer = this.answers[qTitle];
+    if (question.validate(answer)) {
+      this.index++;
+    }
   }
 
   isQuestionsOver() {
@@ -21,7 +26,7 @@ class Questions {
 
   recordInput(input) {
     const qTitle = this.qTitles[this.index];
-    this.answers[qTitle] = input;
+    this.answers[qTitle] = this.questionsList[qTitle].parser(input);
   }
 
   getAnswers() {
