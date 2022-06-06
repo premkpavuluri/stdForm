@@ -11,10 +11,9 @@ class Questions {
     return this.questionsList[qTitle]?.question;
   }
 
-  isAnswerValid() {
+  isAnswerValid(answer) {
     const qTitle = this.qTitles[this.index];
     const question = this.questionsList[qTitle];
-    const answer = this.answers[qTitle];
     return question.validate(answer)
   }
 
@@ -28,7 +27,15 @@ class Questions {
 
   recordInput(input) {
     const qTitle = this.qTitles[this.index];
-    this.answers[qTitle] = this.questionsList[qTitle].parser(input);
+    const fieldName = this.questionsList[qTitle].title;
+    const content = this.questionsList[qTitle].parser(input);
+
+    if (!this.answers[fieldName]) {
+      this.answers[fieldName] = content;
+      return;
+    }
+
+    this.answers[fieldName] += '\n' + content;
   }
 
   getAnswers() {

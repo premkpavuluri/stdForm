@@ -19,31 +19,37 @@ const isAddressValid = (address) => address.length !== 0;
 const main = () => {
   const questionsConfig = {
     Name: {
+      title: 'Name',
       question: 'Enter your name',
       parser: identity,
       validate: isNameValid
     },
     DOB: {
+      title: 'DOB',
       question: 'Enter your DOB',
       parser: identity,
       validate: isDateValid
     },
     Hobbies: {
+      title: 'Hobbies',
       question: 'Enter your hobbies',
       parser: splitToArray,
       validate: isHobbiesValid
     },
     PHNO: {
+      title: 'PHNO',
       question: 'Enter your PH No',
       parser: identity,
       validate: isPNValid
     },
     ADDRESSLINE1: {
+      title: 'ADDRESS',
       question: 'Enter Address line1',
       parser: identity,
       validate: isAddressValid
     },
     ADDRESSLINE2: {
+      title: 'ADDRESS',
       question: 'Enter Address line2',
       parser: identity,
       validate: isAddressValid
@@ -54,9 +60,10 @@ const main = () => {
 
   console.log(questions.currentQuestion() + ':');
   process.stdin.on('data', (input) => {
-    questions.recordInput(input.trim());
 
-    if (questions.isAnswerValid()) {
+    const answer = input.trim();
+    if (questions.isAnswerValid(answer)) {
+      questions.recordInput(answer);
       questions.nextQuestion();
     }
 
