@@ -32,7 +32,8 @@ const main = () => {
     questions.nextQuestion();
     userInput.push(input);
     if (questions.isQuestionsOver()) {
-      process.exitCode = 0;
+      process.stdin.emit('close');
+      process.exit(0);
     }
   });
 
