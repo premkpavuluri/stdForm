@@ -12,10 +12,12 @@ const isHobbiesValid = (hobbies) => hobbies.length !== 0;
 
 const isDateValid = (date) => /^[0-9]{4,4}-[0-9]{2,2}-[0-9]{2,2}$/.test(date);
 
+const isPNValid = (phNumber) => /^[0-9]{10,10}$/.test(phNumber);
+
 const main = () => {
   const questionsConfig = {
     Name: {
-      question: 'Enter your name:',
+      question: 'Enter your name',
       parser: identity,
       validate: isNameValid
     },
@@ -28,12 +30,17 @@ const main = () => {
       question: 'Enter your hobbies',
       parser: splitToArray,
       validate: isHobbiesValid
+    },
+    PHNO: {
+      question: 'Enter your PH No',
+      parser: identity,
+      validate: isPNValid
     }
   };
 
   const questions = new Questions(questionsConfig);
 
-  console.log(questions.currentQuestion());
+  console.log(questions.currentQuestion() + ':');
   process.stdin.on('data', (input) => {
     questions.recordInput(input.trim());
 
@@ -48,7 +55,7 @@ const main = () => {
       process.exit(0);
     }
 
-    console.log(questions.currentQuestion());
+    console.log(questions.currentQuestion() + ':');
   });
 
   process.stdin.on('close', () => console.log('Thank you'));
