@@ -1,19 +1,16 @@
 class Questions {
   constructor(questions) {
     this.questionsList = questions;
-    this.qTitles = Object.keys(questions);
     this.index = 0;
     this.answers = {};
   }
 
   currentQuestion() {
-    const qTitle = this.qTitles[this.index];
-    return this.questionsList[qTitle]?.question;
+    return this.questionsList[this.index].question;
   }
 
   isAnswerValid(answer) {
-    const qTitle = this.qTitles[this.index];
-    const question = this.questionsList[qTitle];
+    const question = this.questionsList[this.index];
     return question.validate(answer)
   }
 
@@ -22,13 +19,13 @@ class Questions {
   }
 
   isQuestionsOver() {
-    return this.qTitles.length <= this.index;
+    return this.questionsList.length <= this.index;
   }
 
   recordInput(input) {
-    const qTitle = this.qTitles[this.index];
-    const fieldName = this.questionsList[qTitle].title;
-    const content = this.questionsList[qTitle].parser(input);
+    const question = this.questionsList[this.index];
+    const fieldName = question.title;
+    const content = question.parser(input);
 
     if (!this.answers[fieldName]) {
       this.answers[fieldName] = content;
