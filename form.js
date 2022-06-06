@@ -14,6 +14,8 @@ const isDateValid = (date) => /^[0-9]{4,4}-[0-9]{2,2}-[0-9]{2,2}$/.test(date);
 
 const isPNValid = (phNumber) => /^[0-9]{10,10}$/.test(phNumber);
 
+const isAddressValid = (address) => address.length !== 0;
+
 const main = () => {
   const questionsConfig = {
     Name: {
@@ -35,6 +37,16 @@ const main = () => {
       question: 'Enter your PH No',
       parser: identity,
       validate: isPNValid
+    },
+    ADDRESSLINE1: {
+      question: 'Enter Address line1',
+      parser: identity,
+      validate: isAddressValid
+    },
+    ADDRESSLINE2: {
+      question: 'Enter Address line2',
+      parser: identity,
+      validate: isAddressValid
     }
   };
 

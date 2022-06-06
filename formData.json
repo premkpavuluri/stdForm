@@ -1,1 +1,12 @@
-{"Name":"premkumar","DOB":"1111-11-11","Hobbies":["a"],"PHNO":"1111111111"}
+{
+  "Name": "premkumar",
+  "DOB": "1111-11-11",
+  "Hobbies": [
+    "a",
+    "b",
+    "c"
+  ],
+  "PHNO": "1111111111",
+  "ADDRESSLINE1": "gvd",
+  "ADDRESSLINE2": "ap"
+}
