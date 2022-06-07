@@ -10,8 +10,8 @@ class Questions {
   }
 
   isAnswerValid(answer) {
-    const question = this.questionsList[this.index];
-    return question.validate(answer)
+    const field = this.questionsList[this.index];
+    return field.validate(answer)
   }
 
   nextQuestion() {
@@ -22,10 +22,10 @@ class Questions {
     return this.questionsList.length <= this.index;
   }
 
-  recordInput(input) {
-    const question = this.questionsList[this.index];
-    const fieldName = question.title;
-    const content = question.parser(input);
+  recordAnswer(answer) {
+    const field = this.questionsList[this.index];
+    const fieldName = field.title;
+    const content = field.parser(answer);
 
     if (!this.answers[fieldName]) {
       this.answers[fieldName] = content;

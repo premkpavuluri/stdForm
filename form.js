@@ -1,5 +1,6 @@
 process.stdin.setEncoding('utf8');
 const { Questions } = require('./questions.js');
+const { ConfigQueries } = require('./configQueries');
 const fs = require('fs');
 
 const identity = (arg) => arg;
@@ -17,66 +18,39 @@ const isPNValid = (phNumber) => /^[0-9]{10,10}$/.test(phNumber);
 const isAddressValid = (address) => address.length !== 0;
 
 const main = () => {
-  const questionsConfig = [
-    {
-      title: 'Name',
-      question: 'Enter your name',
-      parser: identity,
-      validate: isNameValid
-    }, {
-      title: 'DOB',
-      question: 'Enter your DOB',
-      parser: identity,
-      validate: isDateValid
-    },
-    {
-      title: 'Hobbies',
-      question: 'Enter your hobbies',
-      parser: splitToArray,
-      validate: isHobbiesValid
-    },
-    {
-      title: 'PHNO',
-      question: 'Enter your PH No',
-      parser: identity,
-      validate: isPNValid
-    },
-    {
-      title: 'ADDRESS',
-      question: 'Enter Address line1',
-      parser: identity,
-      validate: isAddressValid
-    },
-    {
-      title: 'ADDRESS',
-      question: 'Enter Address line2',
-      parser: identity,
-      validate: isAddressValid
-    }
-  ];
+  const queries = new ConfigQueries();
 
-  const questions = new Questions(questionsConfig);
+  queries.config('Name', 'Enter your name', identity, isNameValid);
+  queries.config('DOB', 'Enter your DOB(yyyy-mm-dd)', identity, isDateValid);
+  queries.config('Hobbies', 'Enter your hobbies', splitToArray, isHobbiesValid);
+  queries.config('PHNO', 'Enter your Ph no', identity, isPNValid);
+  queries.config('ADDRESS', 'Enter Address line1', identity, isAddressValid);
+  queries.config('ADDRESS', 'Enter Address line2', identity, isAddressValid);
+
+  const questions = new Questions(queries.getConfig());
 
   console.log(questions.currentQuestion() + ':');
   process.stdin.on('data', (input) => {
     const answer = input.trim();
 
     if (questions.isAnswerValid(answer)) {
-      questions.recordInput(answer);
+      questions.recordAnswer(answer);
       questions.nextQuestion();
     }
 
     if (questions.isQuestionsOver()) {
       process.stdin.emit('close');
-      const content = JSON.stringify(questions.getAnswers());
-      fs.writeFileSync('formData.json', content, 'utf8');
       process.exit(0);
     }
 
     console.log(questions.currentQuestion() + ':');
   });
 
-  process.stdin.on('close', () => console.log('Thank you'));
+  process.stdin.on('close', () => {
+    const content = JSON.stringify(questions.getAnswers());
+    fs.writeFileSync('formData.json', content, 'utf8');
+    console.log('Thank you')
+  });
 };
 
 main();
