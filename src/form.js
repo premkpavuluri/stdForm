@@ -1,34 +1,30 @@
-class Questions {
-  constructor(fields, questions) {
-    this.questionsList = questions;
+class Form {
+  constructor(fields) {
     this.fields = fields;
     this.index = 0;
     this.answers = {};
   }
 
-  currentQuestion() {
+  currentPrompt() {
     return this.fields[this.index].getPrompt();
   }
 
-  isAnswerValid(answer) {
+  isResponseValid(response) {
     const currentField = this.fields[this.index];
-    return currentField.isValid(answer);
+    return currentField.isValid(response);
   }
 
-  nextQuestion() {
-    this.index++;
-  }
-
-  isQuestionsOver() {
+  isFormFilled() {
     return this.fields.every(field => field.isFilled());
   }
 
-  recordAnswer(answer) {
+  recordResponse(response) {
     const currentField = this.fields[this.index];
-    currentField.fill(answer);
+    currentField.fill(response);
+    this.index++;
   }
 
-  getAnswers() {
+  getAllResponses() {
     const responses = {};
     this.fields.forEach(field => {
       const { name, response } = field.getDetails();
@@ -39,4 +35,4 @@ class Questions {
   }
 }
 
-exports.Questions = Questions;
+module.exports = { Form };
