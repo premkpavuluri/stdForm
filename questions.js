@@ -1,17 +1,18 @@
 class Questions {
-  constructor(questions) {
+  constructor(fields, questions) {
     this.questionsList = questions;
+    this.fields = fields;
     this.index = 0;
     this.answers = {};
   }
 
   currentQuestion() {
-    return this.questionsList[this.index].question;
+    return this.fields[this.index].getPrompt();
   }
 
   isAnswerValid(answer) {
-    const field = this.questionsList[this.index];
-    return field.validate(answer)
+    const currentField = this.fields[this.index];
+    return currentField.isValid(answer);
   }
 
   nextQuestion() {
@@ -19,24 +20,22 @@ class Questions {
   }
 
   isQuestionsOver() {
-    return this.questionsList.length <= this.index;
+    return this.fields.every(field => field.isFilled());
   }
 
   recordAnswer(answer) {
-    const field = this.questionsList[this.index];
-    const fieldName = field.title;
-    const content = field.parser(answer);
-
-    if (!this.answers[fieldName]) {
-      this.answers[fieldName] = content;
-      return;
-    }
-
-    this.answers[fieldName] += '\n' + content;
+    const currentField = this.fields[this.index];
+    currentField.fill(answer);
   }
 
   getAnswers() {
-    return this.answers;
+    const responses = {};
+    this.fields.forEach(field => {
+      const { name, response } = field.getDetails();
+      responses[name] = response;
+    });
+
+    return responses;
   }
 }
 

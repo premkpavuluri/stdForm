@@ -1,10 +1,9 @@
 {
-  "Name": "premkumar",
-  "DOB": "1111-11-11",
-  "Hobbies": [
+  "name": "premkumar",
+  "dob": "1111-11-11",
+  "hobbies": [
     "a",
     "b"
   ],
-  "PHNO": "1111111111",
-  "ADDRESS": "gvd\nap"
+  "phno": "1111111111"
 }
